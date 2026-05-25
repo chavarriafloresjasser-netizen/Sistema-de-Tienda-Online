@@ -29,9 +29,8 @@
         Console.WriteLine($"Correo: {Correo}");
         Console.WriteLine($"Teléfono: {Telefono}");
     }
-    //Metodos abstractos (obligatorios para las clases hijas)
-    public abstract void AsignarID();
     //Metodos publicos (no modificables por las clases hijas)
+
     //Encapsulamiento de los atributos de la clase CrearCuenta
     public string? Nombre
     {
@@ -85,10 +84,10 @@
         get => _telefono;
         private set
         {
-            if(value != 8)
-                throw new ArgumentException("Número de teléfono no autorizado");
+            if(value.ToString().Length != 8)
+                throw new ArgumentException("Número de teléfono no autorizado A*");
             if (!value.ToString().StartsWith("8") && !value.ToString().StartsWith("5") && !value.ToString().StartsWith("7") && !value.ToString().StartsWith("2"))
-                throw new ArgumentException("Número de teléfono no autorizado");
+                throw new ArgumentException("Número de teléfono no autorizado A/");
             _telefono = value;
         }
     }
