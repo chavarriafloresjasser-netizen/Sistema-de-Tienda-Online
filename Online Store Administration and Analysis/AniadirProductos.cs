@@ -1,4 +1,4 @@
-﻿public class AniadirProducto
+﻿public class AniadirProductos
 {
     private string? _nombreProducto;
     private string? _descripcion;
