@@ -10,6 +10,7 @@
     public CrearCuenta(string nombre, string correo,string contraseña, int telefono)
     {
         Nombre = nombre;
+        Correo = correo;
         Contraseña = contraseña;
         Telefono = telefono;
         CreacionCuenta();
