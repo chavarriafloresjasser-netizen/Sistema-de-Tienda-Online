@@ -1,11 +1,15 @@
-﻿public static class UserInterface
-{ 
+﻿public class UserInterface
+{
+    public UserInterface(UsuariosAlmacenados usuarios)
+    {
+    }
     /// <summary>
     /// Inicio de todo el programa, donde le pide al usuario que inicie sesion
     /// si ya posee una, de lo contrario que cree una nueva
     /// </summary>
-    public static void Inicio()
+    public static void Inicio(UsuariosAlmacenados usuarios)
     {
+        Console.Clear();
         DiseñosGenerales diseñosGenerales = new DiseñosGenerales();
         diseñosGenerales.RecuadroPrincipal("Glados Shoping");
         bool excepcion = false;
@@ -40,10 +44,10 @@
         switch (opcion)
         {
             case "SI":
-                IniciarSesionEnCuenta();
+                IniciarSesionEn(usuarios);
                 break;
             case "NO":
-                CrearNuevaCuentaDeUsuario();
+                CrearNuevaCuentaDeUsuario(usuarios);
                 break;
         }
     }
@@ -54,11 +58,12 @@
     /// usuario ingresa un dato no válido, se le indicará el error y 
     /// se le solicitará que vuelva a ingresar la información hasta que sea correcta.
     /// </summary>
-    public static void CrearNuevaCuentaDeUsuario()
+    public static void CrearNuevaCuentaDeUsuario(UsuariosAlmacenados usuarios)
     {
+        Console.Clear();
         DiseñosGenerales diseñosGenerales = new DiseñosGenerales();
         diseñosGenerales.RecuadroPrincipal("Registrar nueva cuenta");
-        CrearCuentaUsuario? nuevoUsuario = null;
+        crearCuentaUsuario? nuevoUsuario = null;
         bool opcion = false;
         string? PrimerNombre = "";
         string? SegundoNombre = "";
@@ -71,17 +76,17 @@
         {
             diseñosGenerales.RemarcarTexto("Primer Nombre:");
             PrimerNombre = Console.ReadLine();
-            diseñosGenerales.RemarcarTexto("Segundo Nombre:");
+            diseñosGenerales.RemarcarTexto("\nSegundo Nombre:");
             SegundoNombre = Console.ReadLine();
-            diseñosGenerales.RemarcarTexto("Primer Apellido:");
+            diseñosGenerales.RemarcarTexto("\nPrimer Apellido:");
             PrimerApellido = Console.ReadLine();
-            diseñosGenerales.RemarcarTexto("Segundo Apellido:");
+            diseñosGenerales.RemarcarTexto("\nSegundo Apellido:");
             SegundoApellido = Console.ReadLine();
-            diseñosGenerales.RemarcarTexto("Correo Electrónico:");
+            diseñosGenerales.RemarcarTexto("\nCorreo Electrónico:");
             CorreoElectronico = Console.ReadLine();
-            diseñosGenerales.RemarcarTexto("Contraseña:");
+            diseñosGenerales.RemarcarTexto("\nContraseña:");
             Contraseña = Console.ReadLine();
-            diseñosGenerales.RemarcarTexto("Teléfono:");
+            diseñosGenerales.RemarcarTexto("\nTeléfono:");
             do
             {
                 try
@@ -98,8 +103,16 @@
 
             try
             {
-                nuevoUsuario = new CrearCuentaUsuario(PrimerNombre, CorreoElectronico, Contraseña, Telefono, SegundoNombre, PrimerApellido, SegundoApellido);
-                opcion = true;
+                nuevoUsuario = new crearCuentaUsuario(PrimerNombre, CorreoElectronico, Contraseña, Telefono, SegundoNombre, PrimerApellido, SegundoApellido);
+                try
+                {
+                    usuarios.AgregarUsuario(nuevoUsuario);
+                    opcion = true;
+                }
+                catch (ArgumentException ex)
+                {
+                    Console.WriteLine(ex.Message);
+                }
             }
             catch (ArgumentException ex)
             {
@@ -115,10 +128,29 @@
     /// su correo electrónico y contraseña para poder acceder a 
     /// dicha cuenta
     /// </summary>
-    public static void IniciarSesionEnCuenta()
+    public static void IniciarSesionEn(UsuariosAlmacenados usuarios)
     {
+        Console.Clear();
         DiseñosGenerales diseñosGenerales = new DiseñosGenerales();
         diseñosGenerales.RecuadroPrincipal("Iniciar sesión");
-        // Lógica para iniciar sesión
+        string? correo = "";
+        string? contraseña = "";
+        do
+        {
+            diseñosGenerales.RemarcarTexto("\nCorreo Electrónico:");
+            correo = Console.ReadLine();
+            diseñosGenerales.RemarcarTexto("\nContraseña:");
+            contraseña = Console.ReadLine();
+            try
+            {
+                usuarios.VerificarInicioDeSecion(correo, contraseña);
+                Console.WriteLine("Inicio de sesión exitoso.");
+                // Aquí iría el código para redirigir al usuario a la página principal o a su perfil
+            }
+            catch (ArgumentException ex)
+            {
+                Console.WriteLine(ex.Message);
+            }
+        } while (correo == "" || contraseña == "");
     }
 }

@@ -1,17 +1,15 @@
-﻿abstract class CrearCuenta
+﻿public abstract class CrearCuenta
 {
     //Atributos de la clase CrearCuenta que se heredan a las clases hijas
-    private string? _nombre;
     private string? _correo;
+    private string? _nombre;
     private string? _contraseña;
-    private int _id;
     private int _telefono;
 
     //Constructor de la clase CrearCuenta
-    public CrearCuenta(string nombre, string correo, string contraseña, int telefono)
+    public CrearCuenta(string nombre, string correo,string contraseña, int telefono)
     {
         Nombre = nombre;
-        Correo = correo;
         Contraseña = contraseña;
         Telefono = telefono;
         CreacionCuenta();
@@ -67,18 +65,6 @@
             _contraseña = value;
         }
     }
-
-    public int Id
-    {
-        get => _id;
-        private set
-        {
-            if(value <= 0)
-                throw new ArgumentException("ID no autorizado");
-            _id = value;
-        }
-    }
-
     public int Telefono
     {
         get => _telefono;

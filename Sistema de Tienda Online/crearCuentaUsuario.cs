@@ -1,14 +1,19 @@
-﻿sealed class CrearCuentaUsuario : CrearCuenta
+﻿public sealed class crearCuentaUsuario : CrearCuenta
 {
     private string? _segundoNombre;
     private string? _primerApellido;
     private string? _segundoApellido;
 
-    public CrearCuentaUsuario(string nombre, string correo, string contraseña, int telefono, string segundoNombre, string primerApellido, string segundoApellido) : base(nombre, correo, contraseña, telefono)
+    public crearCuentaUsuario(string nombre, string correo, string contraseña, int telefono, string segundoNombre, string primerApellido, string segundoApellido) : base(nombre, correo, contraseña, telefono)
     {
         SegundoNombre = segundoNombre;
         PrimerApellido = primerApellido;
         SegundoApellido = segundoApellido;
+    }
+
+    public override string CreacionCuenta()
+    {
+        return base.CreacionCuenta();
     }
     public string? SegundoNombre
     {
