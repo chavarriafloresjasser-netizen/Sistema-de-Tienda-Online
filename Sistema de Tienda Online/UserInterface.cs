@@ -7,7 +7,7 @@
     /// Inicio de todo el programa, donde le pide al usuario que inicie sesion
     /// si ya posee una, de lo contrario que cree una nueva
     /// </summary>
-    public static void Inicio(UsuariosAlmacenados usuarios)
+    public static void Inicio(UsuariosAlmacenados usuarios, CuentaEmpresarial cuentaEmpresarial)
     {
         Console.Clear();
         DiseñosGenerales diseñosGenerales = new DiseñosGenerales();
@@ -44,10 +44,10 @@
         switch (opcion)
         {
             case "SI":
-                IniciarSesionEn(usuarios);
+                IniciarSesionEn(usuarios, cuentaEmpresarial);
                 break;
             case "NO":
-                CrearNuevaCuentaDeUsuario(usuarios);
+                CrearNuevaCuentaDeUsuario(usuarios, cuentaEmpresarial);
                 break;
         }
     }
@@ -58,7 +58,7 @@
     /// usuario ingresa un dato no válido, se le indicará el error y 
     /// se le solicitará que vuelva a ingresar la información hasta que sea correcta.
     /// </summary>
-    public static void CrearNuevaCuentaDeUsuario(UsuariosAlmacenados usuarios)
+    public static void CrearNuevaCuentaDeUsuario(UsuariosAlmacenados usuarios, CuentaEmpresarial cuentaEmpresarial)
     {
         Console.Clear();
         DiseñosGenerales diseñosGenerales = new DiseñosGenerales();
@@ -120,6 +120,13 @@
                 opcion = false;
             }
         } while (opcion == false);
+        Console.WriteLine("La cuenta ha sido creada exitosamente.");
+        for(int i = 0; i < 3; i++)
+        {
+            Console.WriteLine("Redirigiendo a la página de inicio...");
+            Thread.Sleep(1000);
+        }
+        Inicio(usuarios, cuentaEmpresarial);
     }
 
     /// <summary>
@@ -128,7 +135,7 @@
     /// su correo electrónico y contraseña para poder acceder a 
     /// dicha cuenta
     /// </summary>
-    public static void IniciarSesionEn(UsuariosAlmacenados usuarios)
+    public static void IniciarSesionEn(UsuariosAlmacenados usuarios, CuentaEmpresarial cuentaEmpresarial)
     {
         Console.Clear();
         DiseñosGenerales diseñosGenerales = new DiseñosGenerales();
@@ -145,12 +152,24 @@
             {
                 usuarios.VerificarInicioDeSecion(correo, contraseña);
                 Console.WriteLine("Inicio de sesión exitoso.");
-                // Aquí iría el código para redirigir al usuario a la página principal o a su perfil
+                for (int i = 0; i < 3; i++)
+                {
+                    Console.WriteLine("Redirigiendo a la página de inicio...");
+                    Thread.Sleep(1000);
+                }
             }
             catch (ArgumentException ex)
             {
                 Console.WriteLine(ex.Message);
             }
         } while (correo == "" || contraseña == "");
+        InicioUsuario(cuentaEmpresarial, usuarios, correo);
+    }
+
+    public static void InicioUsuario(CuentaEmpresarial cuentaEmpresarial, UsuariosAlmacenados usuarios, string correo)
+    {
+        Console.Clear();
+        DiseñosGenerales diseños = new DiseñosGenerales();
+        diseños.RecuadroPrincipal(cuentaEmpresarial.Nombre);
     }
 }

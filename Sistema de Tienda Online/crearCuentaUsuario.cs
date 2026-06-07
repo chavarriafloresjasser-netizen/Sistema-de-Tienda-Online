@@ -11,10 +11,6 @@
         SegundoApellido = segundoApellido;
     }
 
-    public override string CreacionCuenta()
-    {
-        return base.CreacionCuenta();
-    }
     public string? SegundoNombre
     {
         get => _segundoNombre;

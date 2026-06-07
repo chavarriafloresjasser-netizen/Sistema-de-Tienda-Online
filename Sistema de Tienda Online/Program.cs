@@ -3,11 +3,15 @@
     public static void Main(string[] args)
     {
         /*Objetos creados necesarios para el funcionamiento del programa*/
+        string rutaUsuarios = "Usuarios.xml";
+        string rutaProductos = "Productos.xml";
+        string carritoCompras = "CarritoCompras.xml";
         UsuariosAlmacenados usuariosAlmacenados = new UsuariosAlmacenados();
         DiseñosGenerales diseñosGenerales = new DiseñosGenerales();
         UserInterface userInterface = new UserInterface(usuariosAlmacenados);
         CuentaEmpresarial cuentaEmpresarial = new CuentaEmpresarial();
         EmpresarialInterface empresarialInterface = new EmpresarialInterface();
+        Repository repository = new Repository();
 
         //Inicio del programa
         diseñosGenerales.RecuadroPrincipal($"Bienvenido a la Tienda Online de {cuentaEmpresarial.Nombre}");
@@ -33,7 +37,7 @@
             switch (opcion)
             {
                 case 1:
-                    UserInterface.Inicio(usuariosAlmacenados);
+                    UserInterface.Inicio(usuariosAlmacenados, cuentaEmpresarial);
                     break;
                 case 2:
                     empresarialInterface.IniciarSesion(cuentaEmpresarial);

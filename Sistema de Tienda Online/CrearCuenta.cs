@@ -13,23 +13,8 @@
         Correo = correo;
         Contraseña = contraseña;
         Telefono = telefono;
-        CreacionCuenta();
     }
-    //Metodos
-    //Metodos virtuales (modificables por las clases hijas)
-    public virtual string CreacionCuenta()
-    {
-        return $"La cuenta ha sido creada exitosamente.";
-    }
-
-    public virtual void MostrarInformacion()
-    {
-        Console.WriteLine($"Nombre: {Nombre}");
-        Console.WriteLine($"Correo: {Correo}");
-        Console.WriteLine($"Teléfono: {Telefono}");
-    }
-    //Metodos publicos (no modificables por las clases hijas)
-
+    
     //Encapsulamiento de los atributos de la clase CrearCuenta
     public string? Nombre
     {
@@ -50,6 +35,7 @@
                 throw new ArgumentException("El correo no puede estar vacío.");
             if(!value.Contains("@") || !value.Contains(".com"))
                 throw new ArgumentException("El correo no es válido.");
+
             _correo = value.Trim();
         }
     }
