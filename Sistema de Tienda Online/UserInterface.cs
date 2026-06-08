@@ -172,6 +172,20 @@
         InicioUsuario(cuentaEmpresarial, usuarios, correo, sistemaDeArchivado, manejoDeProductos, repository, rutaUsuariosSinID, rutaProductosSinID, rutaUsuariosConID, rutaProductosConID);
     }
 
+    /// <summary>
+    /// Aquí se va a mostrar el menú principal del usuario, en el cual podrá elegir entre buscar productos, ver su carrito de compras, ver su perfil o salir de la tienda, 
+    /// cada opción lo llevará a una funcionalidad diferente dentro del programa.
+    /// </summary>
+    /// <param name="cuentaEmpresarial"></param>
+    /// <param name="usuarios"></param>
+    /// <param name="correo"></param>
+    /// <param name="sistemaDeArchivado"></param>
+    /// <param name="manejoDeProductos"></param>
+    /// <param name="repository"></param>
+    /// <param name="rutaUsuariosSinID"></param>
+    /// <param name="rutaProductosSinID"></param>
+    /// <param name="rutaUsuariosConID"></param>
+    /// <param name="rutaProductosConID"></param>
     public static void InicioUsuario(CuentaEmpresarial cuentaEmpresarial, UsuariosAlmacenados usuarios, string correo, SistemaDeArchivado sistemaDeArchivado, ManejoDeProductos manejoDeProductos, Repository repository, string rutaUsuariosSinID, string rutaProductosSinID, string rutaUsuariosConID, string rutaProductosConID)
     {
         Console.Clear();
@@ -233,11 +247,38 @@
         }
     }
 
+    /// <summary>
+    /// Aquí se va a administrar todo lo relacionado con el carrito de compras, como agregar productos, eliminar productos, ver el total a pagar, etc.
+    /// </summary>
+    /// <param name="cuentaEmpresarial"></param>
+    /// <param name="usuarios"></param>
+    /// <param name="correo"></param>
+    /// <param name="sistemaDeArchivado"></param>
+    /// <param name="manejoDeProductos"></param>
+    /// <param name="repository"></param>
+    /// <param name="rutaUsuariosSinID"></param>
+    /// <param name="rutaProductosSinID"></param>
+    /// <param name="rutaUsuariosConID"></param>
+    /// <param name="rutaProductosConID"></param>
     public static void CarritoDeCompras(CuentaEmpresarial cuentaEmpresarial, UsuariosAlmacenados usuarios, string correo, SistemaDeArchivado sistemaDeArchivado, 
         ManejoDeProductos manejoDeProductos, Repository repository, string rutaUsuariosSinID, string rutaProductosSinID, string rutaUsuariosConID, string rutaProductosConID)
     {
         Console.WriteLine("Funcionalidad de carrito de compras aún no implementada.");
     }
+
+    /// <summary>
+    /// Aquí se va a mostrar toda la información del perfil del usuario, como su nombre completo, correo electrónico, número de teléfono, etc.
+    /// </summary>
+    /// <param name="cuentaEmpresarial"></param>
+    /// <param name="usuarios"></param>
+    /// <param name="correo"></param>
+    /// <param name="sistemaDeArchivado"></param>
+    /// <param name="manejoDeProductos"></param>
+    /// <param name="repository"></param>
+    /// <param name="rutaUsuariosSinID"></param>
+    /// <param name="rutaProductosSinID"></param>
+    /// <param name="rutaUsuariosConID"></param>
+    /// <param name="rutaProductosConID"></param>
     public static void VerPerfil(CuentaEmpresarial cuentaEmpresarial, UsuariosAlmacenados usuarios, string correo, SistemaDeArchivado sistemaDeArchivado, 
         ManejoDeProductos manejoDeProductos, Repository repository, string rutaUsuariosSinID, string rutaProductosSinID, string rutaUsuariosConID, string rutaProductosConID)
     {
@@ -257,6 +298,20 @@
         InicioUsuario(cuentaEmpresarial, usuarios, correo, sistemaDeArchivado, manejoDeProductos, repository, rutaUsuariosSinID, rutaProductosSinID, rutaUsuariosConID, rutaProductosConID);
     }
 
+    /// <summary>
+    /// Aquí se va a implementar la funcionalidad de buscar productos, en el cual el usuario podrá ingresar el nombre del producto que desea buscar y se le mostrarán los resultados que coincidan con su búsqueda, además de que podrá agregar 
+    /// el producto al carrito de compras directamente desde la búsqueda.
+    /// </summary>
+    /// <param name="cuentaEmpresarial"></param>
+    /// <param name="usuarios"></param>
+    /// <param name="correo"></param>
+    /// <param name="sistemaDeArchivado"></param>
+    /// <param name="manejoDeProductos"></param>
+    /// <param name="repository"></param>
+    /// <param name="rutaUsuariosSinID"></param>
+    /// <param name="rutaProductosSinID"></param>
+    /// <param name="rutaUsuariosConID"></param>
+    /// <param name="rutaProductosConID"></param>
     public static void BuscarProductos(CuentaEmpresarial cuentaEmpresarial, UsuariosAlmacenados usuarios, string correo, SistemaDeArchivado sistemaDeArchivado, 
         ManejoDeProductos manejoDeProductos, Repository repository, string rutaUsuariosSinID, string rutaProductosSinID, string rutaUsuariosConID, string rutaProductosConID)
     {
