@@ -3,15 +3,28 @@
     public static void Main(string[] args)
     {
         /*Objetos creados necesarios para el funcionamiento del programa*/
-        string rutaUsuarios = "Usuarios.xml";
-        string rutaProductos = "Productos.xml";
-        string carritoCompras = "CarritoCompras.xml";
+        string rutaUsuariosSinID = "UsuariosSinID.xml";
+        string rutaProductosSinID = "ProductosSinID.xml";
+        string rutaUsuariosConID = "UsuariosConID.xml";
+        string rutaProductosConID = "ProductosConID.xml";
         UsuariosAlmacenados usuariosAlmacenados = new UsuariosAlmacenados();
         DiseñosGenerales diseñosGenerales = new DiseñosGenerales();
-        UserInterface userInterface = new UserInterface(usuariosAlmacenados);
+        UserInterface userInterface = new UserInterface();
         CuentaEmpresarial cuentaEmpresarial = new CuentaEmpresarial();
+        ManejoDeProductos manejoDeProductos = new ManejoDeProductos();
         EmpresarialInterface empresarialInterface = new EmpresarialInterface();
         Repository repository = new Repository();
+        SistemaDeArchivado sistemaDeArchivado = new SistemaDeArchivado();
+
+        //Revisar si los archivos existen, si no existen se crean posteriormente, si existen se cargan los datos
+        if (File.Exists(rutaUsuariosSinID) || File.Exists(rutaProductosSinID))
+        {
+            repository.CargarDatosSinID(usuariosAlmacenados, manejoDeProductos, rutaUsuariosSinID, rutaProductosSinID);
+        }
+        if (File.Exists(rutaUsuariosConID) || File.Exists(rutaProductosConID))
+        {
+            repository.CargarDatosConID(usuariosAlmacenados, manejoDeProductos, rutaUsuariosConID, rutaProductosConID);
+        }
 
         //Inicio del programa
         diseñosGenerales.RecuadroPrincipal($"Bienvenido a la Tienda Online de {cuentaEmpresarial.Nombre}");
@@ -37,7 +50,8 @@
             switch (opcion)
             {
                 case 1:
-                    UserInterface.Inicio(usuariosAlmacenados, cuentaEmpresarial);
+                    UserInterface.Inicio(usuariosAlmacenados, cuentaEmpresarial, sistemaDeArchivado, manejoDeProductos, 
+                        repository, rutaUsuariosSinID, rutaProductosSinID, rutaUsuariosConID, rutaProductosConID);
                     break;
                 case 2:
                     empresarialInterface.IniciarSesion(cuentaEmpresarial);

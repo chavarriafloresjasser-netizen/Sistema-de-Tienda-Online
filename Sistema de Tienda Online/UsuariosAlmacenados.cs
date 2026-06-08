@@ -32,6 +32,12 @@
         UsuariosConID[id] = usuario;
     }
 
+    /// <summary>
+    /// Verifica las credenciales de inicio de sesión de un usuario. El método busca el usuario por correo electrónico
+    /// </summary>
+    /// <param name="correo"></param>
+    /// <param name="contraseña"></param>
+    /// <exception cref="ArgumentException"></exception>
     public void VerificarInicioDeSecion(string correo, string contraseña)
     {
         var usuario = UsuariosConID.Values.FirstOrDefault(u => u.Correo == correo);

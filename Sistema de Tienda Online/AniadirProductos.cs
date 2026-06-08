@@ -6,11 +6,13 @@
     private decimal _precio;
     private int _stockInicial;
     private string? _categoria;
+    private DateTime _fechaCreacion;
 
     public AniadirProductos(string nombreProducto, string descripcion, decimal precio, int stockInicial, string categoria)
     {
         NombreProducto = nombreProducto;
         Descripcion = descripcion;
+        FechaCreacion = DateTime.Now;
         Precio = precio;
         StockInicial = stockInicial;
         Categoria = categoria;
@@ -21,6 +23,7 @@
         NombreProducto = nombreProducto;
         Extra = extra;
         Descripcion = descripcion;
+        _fechaCreacion = DateTime.Now;
         Precio = precio;
         StockInicial = stockInicial;
         Categoria = categoria;
@@ -90,5 +93,11 @@
                 throw new ArgumentException("La categoría del producto no puede estar vacía.");
             _categoria = value.Trim().ToUpper();
         }
+    }
+
+    public DateTime FechaCreacion
+    {
+        get => _fechaCreacion;
+        private set => _fechaCreacion = value;
     }
 }

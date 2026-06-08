@@ -5,11 +5,13 @@
     private string? _nombre;
     private string? _contraseña;
     private int _telefono;
+    private DateTime _fechaCreacion;
 
     //Constructor de la clase CrearCuenta
     public CrearCuenta(string nombre, string correo,string contraseña, int telefono)
     {
         Nombre = nombre;
+        FechaCreacion = DateTime.Now;
         Correo = correo;
         Contraseña = contraseña;
         Telefono = telefono;
@@ -63,5 +65,11 @@
                 throw new ArgumentException("Número de teléfono no autorizado A/");
             _telefono = value;
         }
+    }
+
+    public DateTime FechaCreacion
+    {
+        get => _fechaCreacion;
+        private set => _fechaCreacion = value;
     }
 }
