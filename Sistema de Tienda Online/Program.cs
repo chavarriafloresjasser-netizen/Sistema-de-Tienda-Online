@@ -28,7 +28,7 @@
             }
             catch (Exception ex)
             {
-                Console.WriteLine(ex);
+                Console.WriteLine(ex.Message);
             }
         }
         if (File.Exists(rutaUsuariosConID) || File.Exists(rutaProductosConID))
@@ -38,7 +38,7 @@
                 repository.CargarDatosConID(usuariosAlmacenados, manejoDeProductos, rutaUsuariosConID, rutaProductosConID);
             }catch (Exception ex)
             {
-                Console.WriteLine(ex);
+                Console.WriteLine(ex.Message);
             }
         }
         if(File.Exists(rutaCarrito))

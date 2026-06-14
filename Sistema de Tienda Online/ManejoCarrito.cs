@@ -174,6 +174,13 @@
                     int idProducto = encontrado.Key;
                     var productoEnInventario = productos.ProductosConID[idProducto];
 
+                    if (productoEnInventario.StockInicial < item.Cantidad)
+                    {
+                        throw new InvalidOperationException(
+                            "Stock insuficiente."
+                        );
+                    }
+
                     if (productoEnInventario.StockInicial >= item.Cantidad)
                     {
                         productoEnInventario.StockInicial -= item.Cantidad;

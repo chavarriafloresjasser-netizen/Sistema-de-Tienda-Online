@@ -294,7 +294,7 @@
                     none = true;
                 }catch (FormatException ex)
                 {
-                    Console.WriteLine("ERROR: dato ingresado invalido, digitelo nuevamente" + ex);
+                    Console.WriteLine("ERROR: dato ingresado invalido, digitelo nuevamente" + ex.Message);
                     none = false;
                 }
             } while (none == false);
@@ -318,7 +318,7 @@
                             fx = true;
                         }catch(FormatException ex)
                         {
-                            Console.WriteLine("ERROR: el dato ingresado invalido, intentelo nuevamente");
+                            Console.WriteLine("ERROR: el dato ingresado invalido, intentelo nuevamente " + ex.Message);
                             fx = false;
                         }
                     } while (fx == false);
@@ -329,7 +329,14 @@
                     break;
                 case 3:
                     Console.Clear();
-                    carrito.ComprarTodoElCarrito(manejoDeProductos);
+                    try
+                    {
+                        carrito.ComprarTodoElCarrito(manejoDeProductos);
+                    }
+                    catch (InvalidOperationException ex)
+                    {
+                        Console.WriteLine("ERROR: " + ex.Message);
+                    }
                     sistemaDeArchivado.GuardarDatosSinID(usuarios, manejoDeProductos, rutaUsuariosSinID, rutaProductosSinID, repository);
                     sistemaDeArchivado.GuardarDatosConID(usuarios, manejoDeProductos, rutaUsuariosConID, rutaProductosConID, repository);
                     sistemaDeArchivado.GuardarCarritos(carrito, rutaCarrito, repository);
