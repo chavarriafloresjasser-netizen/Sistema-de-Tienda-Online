@@ -23,7 +23,7 @@
         NombreProducto = nombreProducto;
         Extra = extra;
         Descripcion = descripcion;
-        _fechaCreacion = DateTime.Now;
+        FechaCreacion = DateTime.Now;
         Precio = precio;
         StockInicial = stockInicial;
         Categoria = categoria;
@@ -32,7 +32,7 @@
     public string? NombreProducto
     {
         get => _nombreProducto;
-        private set
+        set
         {
             if (string.IsNullOrWhiteSpace(value))
                 throw new ArgumentException("El nombre del producto no puede estar vacío.");
@@ -43,7 +43,7 @@
     public string? Extra
     {
         get => _extra;
-        private set
+        set
         {
             if (string.IsNullOrWhiteSpace(value))
                 throw new ArgumentException("El campo 'Extra' no puede estar vacío.");
@@ -54,7 +54,7 @@
     public string? Descripcion
     {
         get => _descripcion;
-        private set
+        set
         {
             if (string.IsNullOrWhiteSpace(value))
                 throw new ArgumentException("La descripción del producto no puede estar vacía.");
@@ -65,7 +65,7 @@
     public decimal Precio
     {
         get => _precio;
-        private set
+        set
         {
             if (value <= 0)
                 throw new ArgumentException("El precio del producto debe ser un valor positivo.");
@@ -76,7 +76,7 @@
     public int StockInicial
     {
         get => _stockInicial;
-        private set
+        set
         {
             if (value < 0)
                 throw new ArgumentException("El stock inicial del producto no puede ser un valor negativo.");
@@ -87,7 +87,7 @@
     public string? Categoria
     {
         get => _categoria;
-        private set
+        set
         {
             if (string.IsNullOrWhiteSpace(value))
                 throw new ArgumentException("La categoría del producto no puede estar vacía.");

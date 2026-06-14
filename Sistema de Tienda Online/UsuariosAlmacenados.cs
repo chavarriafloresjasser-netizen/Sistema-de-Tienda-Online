@@ -48,4 +48,13 @@
         if (usuario.Contraseña != contraseña)
             throw new ArgumentException("La contraseña es incorrecta.", nameof(contraseña));
     }
+
+    /// <summary>
+    /// Retorna todos los usuarios
+    /// </summary>
+    /// <returns></returns>
+    public Dictionary<int, crearCuentaUsuario> VerUsuarios()
+    {
+        return UsuariosConID;
+    }
 }

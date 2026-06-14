@@ -54,7 +54,8 @@
                         repository, rutaUsuariosSinID, rutaProductosSinID, rutaUsuariosConID, rutaProductosConID);
                     break;
                 case 2:
-                    empresarialInterface.IniciarSesion(cuentaEmpresarial);
+                    empresarialInterface.IniciarSesion(cuentaEmpresarial, usuariosAlmacenados, sistemaDeArchivado, manejoDeProductos, repository
+                        , rutaUsuariosSinID, rutaProductosSinID, rutaUsuariosConID, rutaProductosConID);
                     break;
                 default:
                     Console.WriteLine("Opcion no valida, intente de nuevo.");

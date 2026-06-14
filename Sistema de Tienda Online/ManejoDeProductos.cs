@@ -40,7 +40,42 @@
     {
         if (!ProductosConID.ContainsKey(id))
             throw new ArgumentException("El ID del producto no existe.", nameof(id));
-        var producto = ProductosConID[id];
         ProductosConID.Remove(id);
+    }
+
+    /// <summary>
+    /// Modifica el producto en dependecia del id del producto a modificar
+    /// </summary>
+    /// <param name="idProducto"></param>
+    /// <param name="producto"></param>
+    /// <exception cref="ArgumentException"></exception>
+    public void ModificarProducto(int idProducto, AniadirProductos producto)
+    {
+        if (!ProductosConID.ContainsKey(idProducto))
+            throw new ArgumentException("El ID del producto no existe");
+        ProductosConID[idProducto] = producto;
+    }
+
+    /// <summary>
+    /// Retorna todos los producto usando unicamente el diccionario implementado
+    /// </summary>
+    /// <returns></returns>
+    public Dictionary<int, AniadirProductos> VerTodosLosProductos ()
+    {
+        return ProductosConID;
+    }
+
+    /// <summary>
+    /// Retorna la información del produto deseado con el id
+    /// </summary>
+    /// <param name="idProducto"></param>
+    /// <returns></returns>
+    public AniadirProductos VerProductoUnico(int idProducto)
+    {
+        if(!ProductosConID.TryGetValue(idProducto, out AniadirProductos producto))
+        {
+            Console.WriteLine("Producto no encontrado");
+        }
+        return producto;
     }
 }
