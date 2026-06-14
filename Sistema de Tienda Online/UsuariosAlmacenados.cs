@@ -28,6 +28,8 @@
             throw new ArgumentNullException(nameof(usuario), "El usuario no puede ser nulo.");
         if(UsuariosConID.Values.Any(u => u.Correo == usuario.Correo))
             throw new ArgumentException("El correo electrónico ya está registrado.", nameof(usuario));
+        if (UsuariosConID.Values.Any(u => u.Telefono == usuario.Telefono))
+            throw new ArgumentException("El número de teléfono ya existe.", nameof(usuario));
         UsuariosSinID.Add(usuario);
         UsuariosConID[id] = usuario;
     }
