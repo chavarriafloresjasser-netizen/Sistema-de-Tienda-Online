@@ -8,6 +8,7 @@
         string rutaUsuariosConID = "UsuariosConID.xml";
         string rutaProductosConID = "ProductosConID.xml";
         string rutaCarrito = "Carritos.xml";
+        CarritoDeCompras nuevoCarrito = new CarritoDeCompras();
         ManejoCarrito carritos = new ManejoCarrito();
         UsuariosAlmacenados usuariosAlmacenados = new UsuariosAlmacenados();
         DiseñosGenerales diseñosGenerales = new DiseñosGenerales();
@@ -76,7 +77,7 @@
             {
                 case 1:
                     UserInterface.Inicio(usuariosAlmacenados, cuentaEmpresarial, sistemaDeArchivado, manejoDeProductos, 
-                        repository, rutaUsuariosSinID, rutaProductosSinID, rutaUsuariosConID, rutaProductosConID, rutaCarrito, carritos);
+                        repository, rutaUsuariosSinID, rutaProductosSinID, rutaUsuariosConID, rutaProductosConID, rutaCarrito, carritos, nuevoCarrito);
                     break;
                 case 2:
                     empresarialInterface.IniciarSesion(cuentaEmpresarial, usuariosAlmacenados, sistemaDeArchivado, manejoDeProductos, repository

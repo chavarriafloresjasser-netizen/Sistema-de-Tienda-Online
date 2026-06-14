@@ -68,7 +68,7 @@
         int totalProductosDiferentes = 0;
         int totalProductos = 0;
         decimal TotalMonto = 0m;
-
+        
         // Buscar usuario por correo y obtener su id
         var usuarioEncontrado = usuario.UsuariosConID.FirstOrDefault(u => u.Value.Correo == Correo);
         int idUsuario = usuarioEncontrado.Key;
@@ -125,6 +125,76 @@
         if(!Carritos.ContainsKey(user.Key))
         {
             Carritos.Add(user.Key, carrito);
+        }
+    }
+
+    /// <summary>
+    /// Al momento de aplicar este método se va a aplicar lo siguiente, primero se van a restar productos que tenemos al carritos
+    /// a los productos asignados en el ManejoDeProductos, y segundo, se va a vaciar todo el carrito
+    /// </summary>
+    public void ComprarTodoElCarrito(ManejoDeProductos productos)
+    {
+        if (productos == null)
+            throw new ArgumentNullException(nameof(productos));
+
+        // Recorre cada carrito de cada usuario
+        foreach (var kv in Carritos.ToList())
+        {
+            var idUsuario = kv.Key;
+            var carrito = kv.Value;
+
+            if (carrito.ProductosEnCarrito == null || !carrito.ProductosEnCarrito.Any())
+                continue;
+
+            // Agrupar productos iguales en el carrito para conocer cantidades
+            var agrupados = carrito.ProductosEnCarrito
+                .GroupBy(p => new { p.NombreProducto, p.Extra, p.Precio, p.Categoria })
+                .Select(g => new { Producto = g.First(), Cantidad = g.Count() })
+                .ToList();
+
+            foreach (var item in agrupados)
+            {
+                try
+                {
+                    // Buscar el ID del producto en el ManejoDeProductos comparando campos clave
+                    var encontrado = productos.ProductosConID
+                        .FirstOrDefault(p =>
+                            string.Equals(p.Value.NombreProducto, item.Producto.NombreProducto, StringComparison.OrdinalIgnoreCase)
+                            && string.Equals(p.Value.Extra ?? string.Empty, item.Producto.Extra ?? string.Empty, StringComparison.OrdinalIgnoreCase)
+                            && p.Value.Precio == item.Producto.Precio
+                            && string.Equals(p.Value.Categoria ?? string.Empty, item.Producto.Categoria ?? string.Empty, StringComparison.OrdinalIgnoreCase)
+                        );
+
+                    if (encontrado.Value == null)
+                    {
+                        Console.WriteLine($"No se encontró el producto '{item.Producto.NombreProducto}' en el inventario. No se actualizará stock.");
+                        continue;
+                    }
+
+                    int idProducto = encontrado.Key;
+                    var productoEnInventario = productos.ProductosConID[idProducto];
+
+                    if (productoEnInventario.StockInicial >= item.Cantidad)
+                    {
+                        productoEnInventario.StockInicial -= item.Cantidad;
+                    }
+                    else
+                    {
+                        // Si no hay suficiente stock, restar lo máximo posible y avisar
+                        int vendido = productoEnInventario.StockInicial;
+                        productoEnInventario.StockInicial = 0;
+                        Console.WriteLine($"Solo se pudieron vender {vendido} unidades de '{productoEnInventario.NombreProducto}' (se solicitaron {item.Cantidad}).");
+                    }
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine($"Error al procesar producto '{item.Producto?.NombreProducto}': {ex.Message}");
+                }
+            }
+
+            // Vaciar el carrito y actualizar fecha del último cambio
+            carrito.ProductosEnCarrito.Clear();
+            carrito.UltimoCambio = DateTime.Now;
         }
     }
 }

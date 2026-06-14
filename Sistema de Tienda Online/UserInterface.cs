@@ -9,7 +9,8 @@
     /// </summary>
     public static void Inicio(UsuariosAlmacenados usuarios, CuentaEmpresarial cuentaEmpresarial, SistemaDeArchivado sistemaDeArchivado,
         ManejoDeProductos manejoDeProductos, Repository repository,
-        string rutaUsuariosSinID, string rutaProductosSinID, string rutaUsuariosConID, string rutaProductosConID, string rutaCarrito, ManejoCarrito carritos)
+        string rutaUsuariosSinID, string rutaProductosSinID, string rutaUsuariosConID, string rutaProductosConID, string rutaCarrito, ManejoCarrito carritos, 
+        CarritoDeCompras carritoUnico)
     {
         Console.Clear();
         DiseñosGenerales diseñosGenerales = new DiseñosGenerales();
@@ -46,10 +47,10 @@
         switch (opcion)
         {
             case "SI":
-                IniciarSesionEn(usuarios, cuentaEmpresarial, sistemaDeArchivado, manejoDeProductos, repository, rutaUsuariosSinID, rutaProductosSinID, rutaUsuariosConID, rutaProductosConID, rutaCarrito,carritos);
+                IniciarSesionEn(usuarios, cuentaEmpresarial, sistemaDeArchivado, manejoDeProductos, repository, rutaUsuariosSinID, rutaProductosSinID, rutaUsuariosConID, rutaProductosConID, rutaCarrito,carritos, carritoUnico);
                 break;
             case "NO":
-                CrearNuevaCuentaDeUsuario(usuarios, cuentaEmpresarial, sistemaDeArchivado, manejoDeProductos, repository, rutaUsuariosSinID, rutaProductosSinID, rutaUsuariosConID, rutaProductosConID, rutaCarrito, carritos);
+                CrearNuevaCuentaDeUsuario(usuarios, cuentaEmpresarial, sistemaDeArchivado, manejoDeProductos, repository, rutaUsuariosSinID, rutaProductosSinID, rutaUsuariosConID, rutaProductosConID, rutaCarrito, carritos, carritoUnico);
                 break;
         }
     }
@@ -62,7 +63,7 @@
     /// </summary>
     public static void CrearNuevaCuentaDeUsuario(UsuariosAlmacenados usuarios, CuentaEmpresarial cuentaEmpresarial, SistemaDeArchivado sistemaDeArchivado, 
         ManejoDeProductos manejoDeProductos,Repository repository, string rutaUsuariosSinID, string rutaProductosSinID, string rutaUsuariosConID, string rutaProductosConID,
-        string rutaCarrito, ManejoCarrito carritos)
+        string rutaCarrito, ManejoCarrito carritos, CarritoDeCompras carritoUnico)
     {
         Console.Clear();
         DiseñosGenerales diseñosGenerales = new DiseñosGenerales();
@@ -133,7 +134,7 @@
         sistemaDeArchivado.GuardarDatosSinID(usuarios, manejoDeProductos, rutaUsuariosSinID, rutaProductosSinID, repository);
         sistemaDeArchivado.GuardarDatosConID(usuarios, manejoDeProductos, rutaUsuariosConID, rutaProductosConID, repository);
         Inicio(usuarios, cuentaEmpresarial, sistemaDeArchivado, manejoDeProductos, repository, rutaUsuariosSinID, rutaProductosSinID, rutaUsuariosConID, rutaProductosConID,
-            rutaCarrito, carritos);
+            rutaCarrito, carritos, carritoUnico);
     }
 
     /// <summary>
@@ -144,7 +145,7 @@
     /// </summary>
     public static void IniciarSesionEn(UsuariosAlmacenados usuarios, CuentaEmpresarial cuentaEmpresarial, SistemaDeArchivado sistemaDeArchivado, ManejoDeProductos manejoDeProductos,
         Repository repository, string rutaUsuariosSinID, string rutaProductosSinID, string rutaUsuariosConID, string rutaProductosConID, string rutaCarrito,
-        ManejoCarrito carritos)
+        ManejoCarrito carritos, CarritoDeCompras carritoUnico)
     {
         Console.Clear();
         DiseñosGenerales diseñosGenerales = new DiseñosGenerales();
@@ -172,7 +173,7 @@
                 Console.WriteLine(ex.Message);
             }
         } while (correo == "" || contraseña == "");
-        InicioUsuario(cuentaEmpresarial, usuarios, correo, sistemaDeArchivado, manejoDeProductos, repository, rutaUsuariosSinID, rutaProductosSinID, rutaUsuariosConID, rutaProductosConID, rutaCarrito, carritos);
+        InicioUsuario(cuentaEmpresarial, usuarios, correo, sistemaDeArchivado, manejoDeProductos, repository, rutaUsuariosSinID, rutaProductosSinID, rutaUsuariosConID, rutaProductosConID, rutaCarrito, carritos, carritoUnico);
     }
 
     /// <summary>
@@ -190,10 +191,11 @@
     /// <param name="rutaUsuariosConID"></param>
     /// <param name="rutaProductosConID"></param>
     public static void InicioUsuario(CuentaEmpresarial cuentaEmpresarial, UsuariosAlmacenados usuarios, string correo, SistemaDeArchivado sistemaDeArchivado, ManejoDeProductos manejoDeProductos, Repository repository, string rutaUsuariosSinID, string rutaProductosSinID, string rutaUsuariosConID, string rutaProductosConID,
-        string rutaCarrito, ManejoCarrito carritos)
+        string rutaCarrito, ManejoCarrito carritos, CarritoDeCompras nuevoCarrito)
     {
         Console.Clear();
         DiseñosGenerales diseños = new DiseñosGenerales();
+        carritos.AsignarCarrito(usuarios, nuevoCarrito, correo);
         diseños.RecuadroPrincipal(cuentaEmpresarial.Nombre);
         diseños.RemarcarTexto($"Sea bienvenido a su cuenta.  que desea hacer?");
         Console.WriteLine("1 - Buscar productos");
@@ -233,20 +235,23 @@
         switch (opcion)
         {
             case 1:
-                Console.WriteLine("Funcionalidad de comprar productos aún no implementada.");
+                BuscarProductos(cuentaEmpresarial, usuarios, correo, sistemaDeArchivado, manejoDeProductos, repository, rutaUsuariosSinID, rutaProductosSinID,
+                    rutaUsuariosConID, rutaProductosConID, rutaCarrito, carritos, nuevoCarrito);
                 break;
             case 2:
-                Console.WriteLine("Funcionalidad de ver carrito de compras aún no implementada.");
+                CarritoDeCompras(cuentaEmpresarial, usuarios, correo, sistemaDeArchivado, manejoDeProductos, repository, rutaUsuariosSinID, rutaProductosSinID, rutaUsuariosConID,
+                    rutaProductosConID, rutaCarrito, carritos, nuevoCarrito);
                 break;
             case 3:
                 VerPerfil(cuentaEmpresarial, usuarios, correo, sistemaDeArchivado, manejoDeProductos, repository, rutaUsuariosSinID, rutaProductosSinID, rutaUsuariosConID, rutaProductosConID,
-                    rutaCarrito, carritos);
+                    rutaCarrito, carritos, nuevoCarrito);
                 break;
             case 4:
                 Console.WriteLine("Saliendo de la tienda...");
                 Thread.Sleep(1000);
                 sistemaDeArchivado.GuardarDatosSinID(usuarios, manejoDeProductos, rutaUsuariosSinID, rutaProductosSinID, repository);
                 sistemaDeArchivado.GuardarDatosConID(usuarios, manejoDeProductos, rutaUsuariosConID, rutaProductosConID, repository);
+                sistemaDeArchivado.GuardarCarritos(carritos, rutaCarrito, repository);
                 Console.ReadKey();
                 break;
         }
@@ -267,9 +272,79 @@
     /// <param name="rutaProductosConID"></param>
     public static void CarritoDeCompras(CuentaEmpresarial cuentaEmpresarial, UsuariosAlmacenados usuarios, string correo, SistemaDeArchivado sistemaDeArchivado, 
         ManejoDeProductos manejoDeProductos, Repository repository, string rutaUsuariosSinID, string rutaProductosSinID, string rutaUsuariosConID, string rutaProductosConID,
-        string rutaCarrito, ManejoCarrito carrito)
+        string rutaCarrito, ManejoCarrito carrito, CarritoDeCompras nuevoCarrito)
     {
-        Console.WriteLine("Funcionalidad de carrito de compras aún no implementada.");
+        DiseñosGenerales diseños = new DiseñosGenerales();
+        int opcion = 0;
+        bool none = false;
+        do
+        {
+            Console.Clear();
+            diseños.RecuadroPrincipal("Carrito de compras");
+            diseños.RemarcarTexto("Que desa hacer?");
+            Console.WriteLine("1. Ver Carrito");
+            Console.WriteLine("2. Eliminar un producto del carrito");
+            Console.WriteLine("3. Comprar Todo el carrito");
+            Console.WriteLine("4. Salir");
+            do
+            {
+                try
+                {
+                    opcion = int.Parse(Console.ReadLine());
+                    none = true;
+                }catch (FormatException ex)
+                {
+                    Console.WriteLine("ERROR: dato ingresado invalido, digitelo nuevamente" + ex);
+                    none = false;
+                }
+            } while (none == false);
+
+            switch (opcion)
+            {
+                case 1:
+                    carrito.VerCarrito(correo, usuarios, manejoDeProductos, nuevoCarrito);
+                    break;
+                case 2:
+                    int idProducto = 0;
+                    bool fx = false;
+                    Console.Clear();
+                    diseños.RecuadroPrincipal("Eliminar producto del carrito");
+                    diseños.RemarcarTexto("Ingrese el ID del producto a eliminar del carrrito");
+                    do
+                    {
+                        try
+                        {
+                            idProducto = int.Parse(Console.ReadLine());
+                            fx = true;
+                        }catch(FormatException ex)
+                        {
+                            Console.WriteLine("ERROR: el dato ingresado invalido, intentelo nuevamente");
+                            fx = false;
+                        }
+                    } while (fx == false);
+                    carrito.EliminarProductoDelCarrito(idProducto, correo, usuarios, manejoDeProductos);
+                    sistemaDeArchivado.GuardarDatosSinID(usuarios, manejoDeProductos, rutaUsuariosSinID, rutaProductosSinID, repository);
+                    sistemaDeArchivado.GuardarDatosConID(usuarios, manejoDeProductos, rutaUsuariosConID, rutaProductosConID, repository);
+                    sistemaDeArchivado.GuardarCarritos(carrito, rutaCarrito, repository);
+                    break;
+                case 3:
+                    Console.Clear();
+                    carrito.ComprarTodoElCarrito(manejoDeProductos);
+                    sistemaDeArchivado.GuardarDatosSinID(usuarios, manejoDeProductos, rutaUsuariosSinID, rutaProductosSinID, repository);
+                    sistemaDeArchivado.GuardarDatosConID(usuarios, manejoDeProductos, rutaUsuariosConID, rutaProductosConID, repository);
+                    sistemaDeArchivado.GuardarCarritos(carrito, rutaCarrito, repository);
+                    diseños.RemarcarTexto("Tarea ejecutada");
+                    Thread.Sleep(3000);
+                    break;
+                case 4:
+                    sistemaDeArchivado.GuardarDatosSinID(usuarios, manejoDeProductos, rutaUsuariosSinID, rutaProductosSinID, repository);
+                    sistemaDeArchivado.GuardarDatosConID(usuarios, manejoDeProductos, rutaUsuariosConID, rutaProductosConID, repository);
+                    sistemaDeArchivado.GuardarCarritos(carrito, rutaCarrito, repository);
+                    InicioUsuario(cuentaEmpresarial, usuarios, correo, sistemaDeArchivado, manejoDeProductos, repository, rutaUsuariosSinID, rutaProductosSinID,
+            rutaUsuariosConID, rutaProductosConID, rutaCarrito, carrito, nuevoCarrito);
+                    break;
+            }
+        } while (opcion != 4);
     }
 
     /// <summary>
@@ -287,7 +362,7 @@
     /// <param name="rutaProductosConID"></param>
     public static void VerPerfil(CuentaEmpresarial cuentaEmpresarial, UsuariosAlmacenados usuarios, string correo, SistemaDeArchivado sistemaDeArchivado, 
         ManejoDeProductos manejoDeProductos, Repository repository, string rutaUsuariosSinID, string rutaProductosSinID, string rutaUsuariosConID, string rutaProductosConID,
-        string rutaCarrito, ManejoCarrito carritos)
+        string rutaCarrito, ManejoCarrito carritos, CarritoDeCompras nuevoCarrito)
     {
         Console.Clear();
         DiseñosGenerales diseñosGenerales = new DiseñosGenerales();
@@ -302,7 +377,7 @@
         do
         { 
         }while(Console.ReadLine() != "1");
-        InicioUsuario(cuentaEmpresarial, usuarios, correo, sistemaDeArchivado, manejoDeProductos, repository, rutaUsuariosSinID, rutaProductosSinID, rutaUsuariosConID, rutaProductosConID, rutaCarrito, carritos);
+        InicioUsuario(cuentaEmpresarial, usuarios, correo, sistemaDeArchivado, manejoDeProductos, repository, rutaUsuariosSinID, rutaProductosSinID, rutaUsuariosConID, rutaProductosConID, rutaCarrito, carritos, nuevoCarrito);
     }
 
     /// <summary>
@@ -321,22 +396,22 @@
     /// <param name="rutaProductosConID"></param>
     public static void BuscarProductos(CuentaEmpresarial cuentaEmpresarial, UsuariosAlmacenados usuarios, string correo, SistemaDeArchivado sistemaDeArchivado, 
         ManejoDeProductos manejoDeProductos, Repository repository, string rutaUsuariosSinID, string rutaProductosSinID, string rutaUsuariosConID, string rutaProductosConID,
-        string rutaCarrito, ManejoCarrito carritos)
+        string rutaCarrito, ManejoCarrito carritos, CarritoDeCompras nuevoCarrito)
     {
         Console.Clear();
         DiseñosGenerales diseñosGenerales = new DiseñosGenerales();
         diseñosGenerales.RecuadroPrincipal("Buscar Productos");
         Console.WriteLine("Ingrese el nombre del producto que desea buscar:");
         string? nombreProducto = Console.ReadLine();
-        bool none = false;
-        do
+        if (string.IsNullOrWhiteSpace(nombreProducto))
         {
-            if (nombreProducto != null)
-                Console.WriteLine("No puede buscar productos sin ingresar un nombre.");
-            else
-                none = true;
-        } while(none == false);
-        var productosEncontrados = manejoDeProductos.ProductosConID.Values.Where(p => p.NombreProducto.Contains(nombreProducto, StringComparison.OrdinalIgnoreCase)).ToList();
+            Console.WriteLine("No puede buscar productos sin ingresar un nombre.");
+            return;
+        }
+
+        var productosEncontrados = manejoDeProductos.ProductosConID
+            .Where(kv => kv.Value.NombreProducto.Contains(nombreProducto, StringComparison.OrdinalIgnoreCase))
+            .ToList();
         if (productosEncontrados.Count == 0)
         {
             Console.WriteLine("No se encontraron productos con ese nombre.");
@@ -344,25 +419,27 @@
         else
         {
             Console.WriteLine("Productos encontrados:");
-            foreach (var producto in productosEncontrados)
+            int i = 1;
+            foreach (var kv in productosEncontrados)
             {
-                int i = 1;
-                Console.WriteLine($" {i}. Nombre: {producto.NombreProducto} {producto.Extra} - Precio: {producto.Precio}");
+                var producto = kv.Value;
+                Console.WriteLine($"{i} - ID: {kv.Key}. Nombre: {producto.NombreProducto} {producto.Extra} - Precio: {producto.Precio}");
                 i++;
             }
         }
 
-            Console.WriteLine("Ingrese el número del producto que desea agregar al carrito o '0' para regresar al menu principal:");
-            int opcion = 0;
+            Console.WriteLine("Ingrese el ID del producto que desea agregar al carrito o '0' para regresar al menu principal:");
+            int id = 0;
             bool validOption = false;
             do
             {
                 try
                 {
-                    opcion = Convert.ToInt32(Console.ReadLine());
-                    if (opcion < 0 || opcion > productosEncontrados.Count)
+                     id = Convert.ToInt32(Console.ReadLine());
+                    // Validar que el id no sea negativo y que exista en los productos
+                    if (id < 0 || (id > 0 && !manejoDeProductos.ProductosConID.ContainsKey(id)))
                     {
-                        Console.WriteLine("Opción no válida, por favor ingrese un número válido.");
+                        Console.WriteLine("Opción no válida, por favor ingrese un ID existente o 0 para regresar.");
                         validOption = false;
                     }
                     else
@@ -376,11 +453,30 @@
                     validOption = false;
                 }
             } while (validOption == false);
-            if (opcion > 0)
+            if (id > 0)
             {
+
+                // Agregar el producto seleccionado al carrito del usuario
+                try
+                {
+                    carritos.AgregarAlCarrito(id, correo, manejoDeProductos, usuarios);
+                    // Guardar cambios de carritos en archivo
+                    
+                        repository.GuardarCarritos(carritos, rutaCarrito);
+                    Console.WriteLine("Producto agregado al carrito correctamente.");
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine("Error al agregar el producto al carrito: " + ex.Message);
+                }
+
                InicioUsuario(cuentaEmpresarial, usuarios, correo, sistemaDeArchivado, manejoDeProductos, repository, rutaUsuariosSinID, rutaProductosSinID, rutaUsuariosConID, rutaProductosConID,
-                   rutaCarrito, carritos);
+                   rutaCarrito, carritos, nuevoCarrito);
             }
-        
+            else if(id == 0)
+        {
+            InicioUsuario(cuentaEmpresarial, usuarios, correo, sistemaDeArchivado, manejoDeProductos, repository, rutaUsuariosSinID, rutaProductosSinID, rutaUsuariosConID, rutaProductosConID,
+                   rutaCarrito, carritos, nuevoCarrito);
+        }
     }
 }

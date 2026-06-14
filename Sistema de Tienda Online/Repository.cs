@@ -443,7 +443,7 @@ public class Repository
                         DateTime fecha = DateTime.TryParse(x.Element("FechaDeCreacion")?.Value, out var fc) ? fc : DateTime.Now;
                         DateTime ultimo = DateTime.TryParse(x.Element("UltimoCambio")?.Value, out var uc) ? uc : DateTime.Now;
 
-                        var carritoObj = new CarritoDeCompras(null, null);
+                        var carritoObj = new CarritoDeCompras();
                         carritoObj.SetFechaDeCreacion(fecha);
                         carritoObj.UltimoCambio = ultimo;
 

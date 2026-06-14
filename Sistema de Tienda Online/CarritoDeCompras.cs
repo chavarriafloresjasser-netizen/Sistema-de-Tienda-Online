@@ -3,7 +3,7 @@
     private DateTime _fechaDeCreacion;
     private DateTime _ultimoCambio;
     public List<AniadirProductos> ProductosEnCarrito = new List<AniadirProductos>();
-    public CarritoDeCompras(UsuariosAlmacenados usuarios, ManejoDeProductos productos)
+    public CarritoDeCompras()
     {
         FechaDeCreacion = DateTime.Now;
         UltimoCambio = DateTime.Now;
