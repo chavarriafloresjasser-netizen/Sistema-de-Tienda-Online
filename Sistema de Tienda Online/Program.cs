@@ -7,6 +7,8 @@
         string rutaProductosSinID = "ProductosSinID.xml";
         string rutaUsuariosConID = "UsuariosConID.xml";
         string rutaProductosConID = "ProductosConID.xml";
+        string rutaCarrito = "Carritos.xml";
+        ManejoCarrito carritos = new ManejoCarrito();
         UsuariosAlmacenados usuariosAlmacenados = new UsuariosAlmacenados();
         DiseñosGenerales diseñosGenerales = new DiseñosGenerales();
         UserInterface userInterface = new UserInterface();
@@ -19,11 +21,34 @@
         //Revisar si los archivos existen, si no existen se crean posteriormente, si existen se cargan los datos
         if (File.Exists(rutaUsuariosSinID) || File.Exists(rutaProductosSinID))
         {
-            repository.CargarDatosSinID(usuariosAlmacenados, manejoDeProductos, rutaUsuariosSinID, rutaProductosSinID);
+            try
+            {
+                repository.CargarDatosSinID(usuariosAlmacenados, manejoDeProductos, rutaUsuariosSinID, rutaProductosSinID);
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex);
+            }
         }
         if (File.Exists(rutaUsuariosConID) || File.Exists(rutaProductosConID))
         {
-            repository.CargarDatosConID(usuariosAlmacenados, manejoDeProductos, rutaUsuariosConID, rutaProductosConID);
+            try
+            {
+                repository.CargarDatosConID(usuariosAlmacenados, manejoDeProductos, rutaUsuariosConID, rutaProductosConID);
+            }catch (Exception ex)
+            {
+                Console.WriteLine(ex);
+            }
+        }
+        if(File.Exists(rutaCarrito))
+        {
+            try
+            {
+                repository.CargarCarritos(carritos, rutaCarrito);
+            }catch (Exception ex)
+            {
+                Console.WriteLine(ex);
+            }
         }
 
         //Inicio del programa
@@ -51,7 +76,7 @@
             {
                 case 1:
                     UserInterface.Inicio(usuariosAlmacenados, cuentaEmpresarial, sistemaDeArchivado, manejoDeProductos, 
-                        repository, rutaUsuariosSinID, rutaProductosSinID, rutaUsuariosConID, rutaProductosConID);
+                        repository, rutaUsuariosSinID, rutaProductosSinID, rutaUsuariosConID, rutaProductosConID, rutaCarrito, carritos);
                     break;
                 case 2:
                     empresarialInterface.IniciarSesion(cuentaEmpresarial, usuariosAlmacenados, sistemaDeArchivado, manejoDeProductos, repository

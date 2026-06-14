@@ -5,10 +5,9 @@
     /// <summary>
     /// Constructor en el cual se le va a asignar el carrito correspondiente
     /// </summary>
-    public ManejoCarrito(UsuariosAlmacenados usuarios, CarritoDeCompras carrito)
+    public ManejoCarrito()
     {
         Carritos = new Dictionary<int, CarritoDeCompras>();
-        AsignarCarrito(usuarios, carrito);
     }
 
     /// <summary>
@@ -34,6 +33,7 @@
         if (Carritos.TryGetValue(idUsuario, out CarritoDeCompras carritoUsuario))
         {
             carritoUsuario.ProductosEnCarrito.Add(productoAsignado);
+            carritoUsuario.UltimoCambio = DateTime.Now;
         }
         else
         {
@@ -119,9 +119,12 @@
     /// </summary>
     /// <param name="usuario"></param>
     /// <param name="carrito"></param>
-    private void AsignarCarrito(UsuariosAlmacenados usuario, CarritoDeCompras carrito)
+    public void AsignarCarrito(UsuariosAlmacenados usuario, CarritoDeCompras carrito, string correo)
     {
-        int idUsuario = usuario.UsuariosConID.Keys.FirstOrDefault();
-        Carritos.Add(idUsuario,carrito);
+        var user = usuario.UsuariosConID.FirstOrDefault(e => e.Value.Correo == correo);
+        if(!Carritos.ContainsKey(user.Key))
+        {
+            Carritos.Add(user.Key, carrito);
+        }
     }
 }

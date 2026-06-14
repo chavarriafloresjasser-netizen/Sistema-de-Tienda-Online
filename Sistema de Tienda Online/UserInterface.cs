@@ -9,7 +9,7 @@
     /// </summary>
     public static void Inicio(UsuariosAlmacenados usuarios, CuentaEmpresarial cuentaEmpresarial, SistemaDeArchivado sistemaDeArchivado,
         ManejoDeProductos manejoDeProductos, Repository repository,
-        string rutaUsuariosSinID, string rutaProductosSinID, string rutaUsuariosConID, string rutaProductosConID)
+        string rutaUsuariosSinID, string rutaProductosSinID, string rutaUsuariosConID, string rutaProductosConID, string rutaCarrito, ManejoCarrito carritos)
     {
         Console.Clear();
         DiseñosGenerales diseñosGenerales = new DiseñosGenerales();
@@ -46,10 +46,10 @@
         switch (opcion)
         {
             case "SI":
-                IniciarSesionEn(usuarios, cuentaEmpresarial, sistemaDeArchivado, manejoDeProductos, repository, rutaUsuariosSinID, rutaProductosSinID, rutaUsuariosConID, rutaProductosConID);
+                IniciarSesionEn(usuarios, cuentaEmpresarial, sistemaDeArchivado, manejoDeProductos, repository, rutaUsuariosSinID, rutaProductosSinID, rutaUsuariosConID, rutaProductosConID, rutaCarrito,carritos);
                 break;
             case "NO":
-                CrearNuevaCuentaDeUsuario(usuarios, cuentaEmpresarial, sistemaDeArchivado, manejoDeProductos, repository, rutaUsuariosSinID, rutaProductosSinID, rutaUsuariosConID, rutaProductosConID);
+                CrearNuevaCuentaDeUsuario(usuarios, cuentaEmpresarial, sistemaDeArchivado, manejoDeProductos, repository, rutaUsuariosSinID, rutaProductosSinID, rutaUsuariosConID, rutaProductosConID, rutaCarrito, carritos);
                 break;
         }
     }
@@ -61,7 +61,8 @@
     /// se le solicitará que vuelva a ingresar la información hasta que sea correcta.
     /// </summary>
     public static void CrearNuevaCuentaDeUsuario(UsuariosAlmacenados usuarios, CuentaEmpresarial cuentaEmpresarial, SistemaDeArchivado sistemaDeArchivado, 
-        ManejoDeProductos manejoDeProductos,Repository repository, string rutaUsuariosSinID, string rutaProductosSinID, string rutaUsuariosConID, string rutaProductosConID)
+        ManejoDeProductos manejoDeProductos,Repository repository, string rutaUsuariosSinID, string rutaProductosSinID, string rutaUsuariosConID, string rutaProductosConID,
+        string rutaCarrito, ManejoCarrito carritos)
     {
         Console.Clear();
         DiseñosGenerales diseñosGenerales = new DiseñosGenerales();
@@ -131,7 +132,8 @@
         }
         sistemaDeArchivado.GuardarDatosSinID(usuarios, manejoDeProductos, rutaUsuariosSinID, rutaProductosSinID, repository);
         sistemaDeArchivado.GuardarDatosConID(usuarios, manejoDeProductos, rutaUsuariosConID, rutaProductosConID, repository);
-        Inicio(usuarios, cuentaEmpresarial, sistemaDeArchivado, manejoDeProductos, repository, rutaUsuariosSinID, rutaProductosSinID, rutaUsuariosConID, rutaProductosConID);
+        Inicio(usuarios, cuentaEmpresarial, sistemaDeArchivado, manejoDeProductos, repository, rutaUsuariosSinID, rutaProductosSinID, rutaUsuariosConID, rutaProductosConID,
+            rutaCarrito, carritos);
     }
 
     /// <summary>
@@ -141,7 +143,8 @@
     /// dicha cuenta
     /// </summary>
     public static void IniciarSesionEn(UsuariosAlmacenados usuarios, CuentaEmpresarial cuentaEmpresarial, SistemaDeArchivado sistemaDeArchivado, ManejoDeProductos manejoDeProductos,
-        Repository repository, string rutaUsuariosSinID, string rutaProductosSinID, string rutaUsuariosConID, string rutaProductosConID)
+        Repository repository, string rutaUsuariosSinID, string rutaProductosSinID, string rutaUsuariosConID, string rutaProductosConID, string rutaCarrito,
+        ManejoCarrito carritos)
     {
         Console.Clear();
         DiseñosGenerales diseñosGenerales = new DiseñosGenerales();
@@ -169,7 +172,7 @@
                 Console.WriteLine(ex.Message);
             }
         } while (correo == "" || contraseña == "");
-        InicioUsuario(cuentaEmpresarial, usuarios, correo, sistemaDeArchivado, manejoDeProductos, repository, rutaUsuariosSinID, rutaProductosSinID, rutaUsuariosConID, rutaProductosConID);
+        InicioUsuario(cuentaEmpresarial, usuarios, correo, sistemaDeArchivado, manejoDeProductos, repository, rutaUsuariosSinID, rutaProductosSinID, rutaUsuariosConID, rutaProductosConID, rutaCarrito, carritos);
     }
 
     /// <summary>
@@ -186,7 +189,8 @@
     /// <param name="rutaProductosSinID"></param>
     /// <param name="rutaUsuariosConID"></param>
     /// <param name="rutaProductosConID"></param>
-    public static void InicioUsuario(CuentaEmpresarial cuentaEmpresarial, UsuariosAlmacenados usuarios, string correo, SistemaDeArchivado sistemaDeArchivado, ManejoDeProductos manejoDeProductos, Repository repository, string rutaUsuariosSinID, string rutaProductosSinID, string rutaUsuariosConID, string rutaProductosConID)
+    public static void InicioUsuario(CuentaEmpresarial cuentaEmpresarial, UsuariosAlmacenados usuarios, string correo, SistemaDeArchivado sistemaDeArchivado, ManejoDeProductos manejoDeProductos, Repository repository, string rutaUsuariosSinID, string rutaProductosSinID, string rutaUsuariosConID, string rutaProductosConID,
+        string rutaCarrito, ManejoCarrito carritos)
     {
         Console.Clear();
         DiseñosGenerales diseños = new DiseñosGenerales();
@@ -235,7 +239,8 @@
                 Console.WriteLine("Funcionalidad de ver carrito de compras aún no implementada.");
                 break;
             case 3:
-                VerPerfil(cuentaEmpresarial, usuarios, correo, sistemaDeArchivado, manejoDeProductos, repository, rutaUsuariosSinID, rutaProductosSinID, rutaUsuariosConID, rutaProductosConID);
+                VerPerfil(cuentaEmpresarial, usuarios, correo, sistemaDeArchivado, manejoDeProductos, repository, rutaUsuariosSinID, rutaProductosSinID, rutaUsuariosConID, rutaProductosConID,
+                    rutaCarrito, carritos);
                 break;
             case 4:
                 Console.WriteLine("Saliendo de la tienda...");
@@ -261,7 +266,8 @@
     /// <param name="rutaUsuariosConID"></param>
     /// <param name="rutaProductosConID"></param>
     public static void CarritoDeCompras(CuentaEmpresarial cuentaEmpresarial, UsuariosAlmacenados usuarios, string correo, SistemaDeArchivado sistemaDeArchivado, 
-        ManejoDeProductos manejoDeProductos, Repository repository, string rutaUsuariosSinID, string rutaProductosSinID, string rutaUsuariosConID, string rutaProductosConID)
+        ManejoDeProductos manejoDeProductos, Repository repository, string rutaUsuariosSinID, string rutaProductosSinID, string rutaUsuariosConID, string rutaProductosConID,
+        string rutaCarrito, ManejoCarrito carrito)
     {
         Console.WriteLine("Funcionalidad de carrito de compras aún no implementada.");
     }
@@ -280,7 +286,8 @@
     /// <param name="rutaUsuariosConID"></param>
     /// <param name="rutaProductosConID"></param>
     public static void VerPerfil(CuentaEmpresarial cuentaEmpresarial, UsuariosAlmacenados usuarios, string correo, SistemaDeArchivado sistemaDeArchivado, 
-        ManejoDeProductos manejoDeProductos, Repository repository, string rutaUsuariosSinID, string rutaProductosSinID, string rutaUsuariosConID, string rutaProductosConID)
+        ManejoDeProductos manejoDeProductos, Repository repository, string rutaUsuariosSinID, string rutaProductosSinID, string rutaUsuariosConID, string rutaProductosConID,
+        string rutaCarrito, ManejoCarrito carritos)
     {
         Console.Clear();
         DiseñosGenerales diseñosGenerales = new DiseñosGenerales();
@@ -295,7 +302,7 @@
         do
         { 
         }while(Console.ReadLine() != "1");
-        InicioUsuario(cuentaEmpresarial, usuarios, correo, sistemaDeArchivado, manejoDeProductos, repository, rutaUsuariosSinID, rutaProductosSinID, rutaUsuariosConID, rutaProductosConID);
+        InicioUsuario(cuentaEmpresarial, usuarios, correo, sistemaDeArchivado, manejoDeProductos, repository, rutaUsuariosSinID, rutaProductosSinID, rutaUsuariosConID, rutaProductosConID, rutaCarrito, carritos);
     }
 
     /// <summary>
@@ -313,7 +320,8 @@
     /// <param name="rutaUsuariosConID"></param>
     /// <param name="rutaProductosConID"></param>
     public static void BuscarProductos(CuentaEmpresarial cuentaEmpresarial, UsuariosAlmacenados usuarios, string correo, SistemaDeArchivado sistemaDeArchivado, 
-        ManejoDeProductos manejoDeProductos, Repository repository, string rutaUsuariosSinID, string rutaProductosSinID, string rutaUsuariosConID, string rutaProductosConID)
+        ManejoDeProductos manejoDeProductos, Repository repository, string rutaUsuariosSinID, string rutaProductosSinID, string rutaUsuariosConID, string rutaProductosConID,
+        string rutaCarrito, ManejoCarrito carritos)
     {
         Console.Clear();
         DiseñosGenerales diseñosGenerales = new DiseñosGenerales();
@@ -370,7 +378,8 @@
             } while (validOption == false);
             if (opcion > 0)
             {
-               InicioUsuario(cuentaEmpresarial, usuarios, correo, sistemaDeArchivado, manejoDeProductos, repository, rutaUsuariosSinID, rutaProductosSinID, rutaUsuariosConID, rutaProductosConID);
+               InicioUsuario(cuentaEmpresarial, usuarios, correo, sistemaDeArchivado, manejoDeProductos, repository, rutaUsuariosSinID, rutaProductosSinID, rutaUsuariosConID, rutaProductosConID,
+                   rutaCarrito, carritos);
             }
         
     }

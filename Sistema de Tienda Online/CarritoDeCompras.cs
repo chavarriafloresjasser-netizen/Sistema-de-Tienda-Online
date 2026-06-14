@@ -14,10 +14,16 @@
         private set => _fechaDeCreacion = value;
     }
 
+    // Permite a Repository restaurar la fecha de creación al cargar desde XML
+    internal void SetFechaDeCreacion(DateTime fecha)
+    {
+        _fechaDeCreacion = fecha;
+    }
+
     public DateTime UltimoCambio
     {
         get => _ultimoCambio;
-        private set
+        set
         {
             if(value < FechaDeCreacion)
                 throw new ArgumentException("La fecha del último cambio no puede ser anterior a la fecha de creación del carrito.");

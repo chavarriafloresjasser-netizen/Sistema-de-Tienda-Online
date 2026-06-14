@@ -247,6 +247,7 @@ public class Repository
                         string segundo = x.Element("SegundoNombre")?.Value ?? string.Empty;
                         string pApellido = x.Element("PrimerApellido")?.Value ?? string.Empty;
                         string sApellido = x.Element("SegundoApellido")?.Value ?? string.Empty;
+                        DateTime fecha = DateTime.TryParse(x.Element("FechaCreacion")?.Value, out var fc) ? fc : DateTime.Now;
 
                         return new crearCuentaUsuario(nombre, correo, contraseña, telefono, segundo, pApellido, sApellido);
                     })
@@ -268,6 +269,7 @@ public class Repository
                         decimal precio = decimal.TryParse(x.Element("Precio")?.Value, out var p) ? p : 0m;
                         int stock = int.TryParse(x.Element("Stock")?.Value, out var s) ? s : 0;
                         string categoria = x.Element("Categoria")?.Value ?? string.Empty;
+                        DateTime fecha = DateTime.TryParse(x.Element("FechaCreacion")?.Value, out var fc) ? fc : DateTime.Now;
 
                         if (string.IsNullOrWhiteSpace(extra))
                             return new AniadirProductos(nombre, descripcion, precio, stock, categoria);
@@ -314,7 +316,7 @@ public class Repository
                         string correo = x.Element("Correo")?.Value ?? string.Empty;
                         string contraseña = x.Element("Contraseña")?.Value ?? string.Empty;
                         int telefono = int.TryParse(x.Element("Telefono")?.Value, out var t) ? t : 0;
-
+                        DateTime fecha = DateTime.TryParse(x.Element("FechaCreacion")?.Value, out var fc) ? fc : DateTime.Now;
                         var usuario = new crearCuentaUsuario(nombre, correo, contraseña, telefono, segundoNombre, primerApellido, segundoApellido);
                         return new { id, usuario };
                     })
@@ -341,6 +343,7 @@ public class Repository
                         decimal precio = decimal.TryParse(x.Element("Precio")?.Value, out var pr) ? pr : 0m;
                         int stock = int.TryParse(x.Element("Stock")?.Value, out var st) ? st : 0;
                         string categoria = x.Element("Categoria")?.Value ?? string.Empty;
+                        DateTime fecha = DateTime.TryParse(x.Element("FechaCreacion")?.Value, out var fc) ? fc : DateTime.Now;
 
                         AniadirProductos producto;
                         if (!string.IsNullOrWhiteSpace(extra))
@@ -356,6 +359,124 @@ public class Repository
             else
             {
                 productos.ProductosConID = new Dictionary<int, AniadirProductos>();
+            }
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine("Error al cargar datos con ID: " + ex.Message);
+        }
+    }
+
+    /// <summary>
+    /// Sistema que guarda todos los carritos de todos los usuarios
+    /// del sistema, en el cual se va a generar un archivo XML que se va
+    /// a cargar a priori
+    /// </summary>
+    /// <param name="carritos"></param>
+    /// <param name="rutaCarrito"></param>
+    public void GuardarCarritos(ManejoCarrito carritos, string rutaCarrito)
+    {
+        try
+        {
+            XElement xmlCarritos = new XElement("Carritos",
+                from carrito in carritos.Carritos
+                select new XElement("Carrito",
+                    new XElement("ID", carrito.Key),
+                    new XElement("FechaDeCreacion", carrito.Value.FechaDeCreacion.ToString("yyyy-MM-dd HH:mm:ss")),
+                    new XElement("UltimoCambio", carrito.Value.UltimoCambio.ToString("yyyy-MM-dd HH:mm:ss")),
+                    new XElement("ListaDeProductos",
+                        from prod in carrito.Value.ProductosEnCarrito
+                        select new XElement("Producto",
+                            new XElement("Nombre", prod.NombreProducto),
+                            prod.Extra != null ? new XElement("Extras", prod.Extra) : null,
+                            new XElement("Precio", prod.Precio),
+                            new XElement("Descripcion", prod.Descripcion),
+                            new XElement("Categoria", prod.Categoria),
+                            new XElement("Stock", prod.StockInicial),
+                            new XElement("FechaCreacion", prod.FechaCreacion.ToString("yyyy-MM-dd HH:mm:ss"))
+                        )
+                    )
+                )
+            );
+            xmlCarritos.Save(rutaCarrito);
+        }
+        catch (UnauthorizedAccessException ex)
+        {
+            Console.WriteLine("No tienes permiso para guardar los productos: " + ex.Message);
+        }
+        catch (DirectoryNotFoundException ex)
+        {
+            Console.WriteLine("Ruta de archivo no encontrada al guardar los productos: " + ex.Message);
+        }
+        catch (IOException ex)
+        {
+            Console.WriteLine("Error de entrada/salida al guardar los productos: " + ex.Message);
+        }
+        catch (InvalidOperationException ex)
+        {
+            Console.WriteLine("Operación no válida al guardar los productos: " + ex.Message);
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine("Error al guardar los productos: " + ex.Message);
+        }
+    }
+
+    /// <summary>
+    /// Metodo que carga los carritos asignados al archivo xml
+    /// </summary>
+    /// <param name="carritos"></param>
+    /// <param name="rutaCarritos"></param>
+    public void CargarCarritos(ManejoCarrito carritos, string rutaCarritos)
+    {
+        try
+        {
+            if(File.Exists(rutaCarritos))
+            {
+                var docCart = XDocument.Load(rutaCarritos);
+                // Root es <Carritos> y cada elemento es <Carrito>
+                var dict = docCart.Root?
+                    .Elements("Carrito")
+                    .Select(x =>
+                    {
+                        int id = int.TryParse(x.Element("ID")?.Value, out var pid) ? pid : 0;
+                        DateTime fecha = DateTime.TryParse(x.Element("FechaDeCreacion")?.Value, out var fc) ? fc : DateTime.Now;
+                        DateTime ultimo = DateTime.TryParse(x.Element("UltimoCambio")?.Value, out var uc) ? uc : DateTime.Now;
+
+                        var carritoObj = new CarritoDeCompras(null, null);
+                        carritoObj.SetFechaDeCreacion(fecha);
+                        carritoObj.UltimoCambio = ultimo;
+
+                        var productos = x.Element("ListaDeProductos")?.Elements("Producto")
+                            .Select(p =>
+                            {
+                                string nombre = p.Element("Nombre")?.Value ?? string.Empty;
+                                string extra = p.Element("Extras")?.Value ?? string.Empty;
+                                string descripcion = p.Element("Descripcion")?.Value ?? string.Empty;
+                                decimal precio = decimal.TryParse(p.Element("Precio")?.Value, out var pr) ? pr : 0m;
+                                int stock = int.TryParse(p.Element("Stock")?.Value, out var st) ? st : 0;
+                                string categoria = p.Element("Categoria")?.Value ?? string.Empty;
+                                // FechaCreacion en producto se ignora para reconstrucción si no es necesaria
+
+                                if (!string.IsNullOrWhiteSpace(extra))
+                                    return (AniadirProductos)new AniadirProductos(nombre, extra, descripcion, precio, stock, categoria);
+                                else
+                                    return (AniadirProductos)new AniadirProductos(nombre, descripcion, precio, stock, categoria);
+                            })
+                            .ToList() ?? new List<AniadirProductos>();
+
+                        carritoObj.ProductosEnCarrito.AddRange(productos);
+
+                        return new { id, carritoObj };
+                    })
+                    .Where(p => p.id != 0)
+                    .ToDictionary(p => p.id, p => p.carritoObj) ?? new Dictionary<int, CarritoDeCompras>();
+
+                carritos.Carritos = dict;
+            }
+            else
+            {
+                carritos.Carritos = new Dictionary<int, CarritoDeCompras>();
             }
         }
         catch (Exception ex)
