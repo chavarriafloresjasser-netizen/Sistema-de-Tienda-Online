@@ -446,9 +446,11 @@
             try
             {
                 id = int.Parse(Console.ReadLine());
+                none = true;
             }catch(FormatException ex)
             {
                 Console.WriteLine("EROR: dato ingresado invalido, intentelo nuevamente " + ex);
+                none = false;
             }
         } while (none == false);
         try
@@ -464,7 +466,7 @@
             Console.WriteLine($"Precio del producto: {productoEncontrado.Precio:C}");
             Console.WriteLine($"Stock del producto: {productoEncontrado.StockInicial}");
             Console.WriteLine($"Fecha de creación: {productoEncontrado.FechaCreacion}");
-
+            Console.WriteLine();
         }
         catch (ArgumentException ex)
         {

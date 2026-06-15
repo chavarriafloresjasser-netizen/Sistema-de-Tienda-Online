@@ -302,7 +302,9 @@
             switch (opcion)
             {
                 case 1:
+                    Console.Clear();
                     carrito.VerCarrito(correo, usuarios, manejoDeProductos, nuevoCarrito);
+                    string ll = Console.ReadLine();
                     break;
                 case 2:
                     int idProducto = 0;
@@ -326,6 +328,8 @@
                     sistemaDeArchivado.GuardarDatosSinID(usuarios, manejoDeProductos, rutaUsuariosSinID, rutaProductosSinID, repository);
                     sistemaDeArchivado.GuardarDatosConID(usuarios, manejoDeProductos, rutaUsuariosConID, rutaProductosConID, repository);
                     sistemaDeArchivado.GuardarCarritos(carrito, rutaCarrito, repository);
+                    diseños.RemarcarTexto("Tarea ejecutada");
+                    Thread.Sleep(3000);
                     break;
                 case 3:
                     Console.Clear();
@@ -380,10 +384,7 @@
         diseñosGenerales.RemarcarTexto("Correo: " + usuario.Value.Correo);
         diseñosGenerales.RemarcarTexto("Telefono: " + usuario.Value.Telefono);
 
-        Console.WriteLine("1 - Salir");
-        do
-        { 
-        }while(Console.ReadLine() != "1");
+        string mm = Console.ReadLine();
         InicioUsuario(cuentaEmpresarial, usuarios, correo, sistemaDeArchivado, manejoDeProductos, repository, rutaUsuariosSinID, rutaProductosSinID, rutaUsuariosConID, rutaProductosConID, rutaCarrito, carritos, nuevoCarrito);
     }
 
