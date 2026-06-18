@@ -17,7 +17,7 @@
         Console.Clear();
         bool opcion = false;
         DiseñosGenerales diseños = new DiseñosGenerales();
-        diseños.RecuadroPrincipal("Iniciar Seción");
+        diseños.RecuadroPrincipal("Iniciar Sesión");
         do
         {
             diseños.RemarcarTexto("Ingrese el correo electrónico:");
